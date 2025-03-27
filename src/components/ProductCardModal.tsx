@@ -112,9 +112,9 @@ export default function ProductCardModal({
             const isSuccess = await isTransactionSuccess(hashHex);
 
             if (isSuccess) {
-                alert('Транзакция успешно отправлена');
+                alert(`Успешная покупка!`);
             } else {
-                alert('Транзакция не была успешно отправлена');
+                alert('Транзакция не прошла');
             }
         } catch (error) {
             alert('Ошибка при отправке транзакции');
