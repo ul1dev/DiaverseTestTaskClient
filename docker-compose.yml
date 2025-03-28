@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+    app:
+        build: .
+        container_name: 'diaversetestclient'
+        image: ulidev/diaversetestclient
+        restart: always
+        ports:
+            - '44444:8081'
+        environment:
+            - NODE_ENV=production
