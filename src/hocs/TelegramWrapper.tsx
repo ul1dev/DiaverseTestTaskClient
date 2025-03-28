@@ -28,60 +28,79 @@ export default function TelegramWrapper({
     }, []);
 
     async function mountTMA() {
-        if (isTMA()) {
-            init();
+        try {
+            if (isTMA()) {
+                init();
 
-            if (viewport.mount.isAvailable() && !viewport.isMounted()) {
-                await viewport.mount();
-                if (viewport.expand.isAvailable()) {
-                    viewport.expand();
+                if (viewport.mount.isAvailable() && !viewport.isMounted()) {
+                    await viewport.mount();
+                    if (viewport.expand.isAvailable()) {
+                        viewport.expand();
+                    }
                 }
-            }
 
-            if (themeParams.mount.isAvailable() && !themeParams.isMounted()) {
-                await themeParams.mount();
-            }
-
-            if (!miniApp.isMounted()) {
-                await miniApp.mount();
-                miniApp.setBottomBarColor('#000000');
-                miniApp.setBackgroundColor('#000000');
-                miniApp.setHeaderColor('#000000');
-            }
-
-            let isMobile = true;
-
-            if (Platform.OS === 'web') {
-                const ua = navigator.userAgent.toLowerCase();
-                isMobile = /android|iphone|ipad|mobile/i.test(ua);
-            }
-
-            if (
-                requestFullscreen.isAvailable() &&
-                !isFullscreen() &&
-                isMobile
-            ) {
-                await requestFullscreen();
-            }
-
-            initData.restore();
-
-            const locale = localStorage.getItem('locale');
-            if (!locale) {
-                const userData = initDataUser();
-                const userLang = userData?.language_code ?? '';
-
-                const cisLanguages = ['ru', 'be', 'uk', 'kk', 'hy', 'az', 'et'];
-
-                if (cisLanguages.includes(userLang)) {
-                    localStorage.setItem('locale', 'ru');
-                } else {
-                    localStorage.setItem('locale', 'en');
+                if (
+                    themeParams.mount.isAvailable() &&
+                    !themeParams.isMounted()
+                ) {
+                    await themeParams.mount();
                 }
-            }
 
-            dispatch(setIsTmaMounted(true));
-        }
+                try {
+                    if (!miniApp.isMounted()) {
+                        await miniApp.mount();
+                        miniApp.setBottomBarColor('#000000');
+                        miniApp.setBackgroundColor('#000000');
+                        miniApp.setHeaderColor('#000000');
+                    }
+                } catch (e) {}
+
+                try {
+                    let isMobile = true;
+
+                    if (Platform.OS === 'web') {
+                        const ua = navigator.userAgent.toLowerCase();
+                        isMobile = /android|iphone|ipad|mobile/i.test(ua);
+                    }
+
+                    if (
+                        requestFullscreen.isAvailable() &&
+                        !isFullscreen() &&
+                        isMobile
+                    ) {
+                        await requestFullscreen();
+                    }
+                } catch (e) {}
+
+                try {
+                    initData.restore();
+
+                    const locale = localStorage.getItem('locale');
+                    if (!locale) {
+                        const userData = initDataUser();
+                        const userLang = userData?.language_code ?? '';
+
+                        const cisLanguages = [
+                            'ru',
+                            'be',
+                            'uk',
+                            'kk',
+                            'hy',
+                            'az',
+                            'et',
+                        ];
+
+                        if (cisLanguages.includes(userLang)) {
+                            localStorage.setItem('locale', 'ru');
+                        } else {
+                            localStorage.setItem('locale', 'en');
+                        }
+                    }
+                } catch (e) {}
+
+                dispatch(setIsTmaMounted(true));
+            }
+        } catch (e) {}
     }
 
     return children;
