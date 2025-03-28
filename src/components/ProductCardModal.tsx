@@ -205,6 +205,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#4e4e4e',
         borderRadius: 8,
         padding: 20,
+        maxWidth: 400,
     },
     modalHeader: {
         fontSize: 20,
