@@ -10,6 +10,7 @@ export interface UserStateType {
     data: UserType;
     loading: boolean;
     isLoaded: boolean;
+    transactions: any[];
 }
 
 export interface TelegramStateType {

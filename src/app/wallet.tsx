@@ -4,22 +4,24 @@ import TransactionCard from '../components/TransactionCard';
 import { useEffect, useState } from 'react';
 import { getCompletedTransactions } from '../api/getCompletedTransactions';
 import { useTypedSelector } from '../hooks/useTypedSelector';
+import { useDispatch } from 'react-redux';
+import { setTransactions } from '../store/reducers/users';
 
 export default function WalletScreen() {
-    const [transactions, setTransactions] = useState([]);
-    const { data: userData } = useTypedSelector((state) => state.user);
+    const { data: userData, transactions } = useTypedSelector(
+        (state) => state.user
+    );
+    const dispatch = useDispatch();
 
     useEffect(() => {
         updateTransactionsList();
-
-        return () => setTransactions([]);
     }, []);
 
     async function updateTransactionsList() {
         const transactionsList = await getCompletedTransactions(userData.id);
 
         if (transactionsList.length) {
-            setTransactions(transactionsList);
+            dispatch(setTransactions(transactionsList));
         }
     }
 

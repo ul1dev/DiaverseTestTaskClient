@@ -22,6 +22,8 @@ import { setIsTonCourseLoading, setTonCourse } from '../store/reducers/payment';
 import TonWeb from 'tonweb';
 import { getTransactionInfo } from '../api/getTransactionInfo';
 import { createTransaction } from '../api/createTransaction';
+import { addTransaction } from '../store/reducers/users';
+import { v4 as uuid } from 'uuid';
 
 interface Props extends ProductType {
     modalVisible: boolean;
@@ -113,6 +115,14 @@ export default function ProductCardModal({
 
             if (isSuccess) {
                 alert(`Успешная покупка!`);
+
+                dispatch(
+                    addTransaction({
+                        id: uuid(),
+                        status: 'PROCESSED',
+                        ...transactionData,
+                    })
+                );
             } else {
                 alert('Транзакция не прошла');
             }
