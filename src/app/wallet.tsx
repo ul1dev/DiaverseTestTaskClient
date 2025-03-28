@@ -20,7 +20,7 @@ export default function WalletScreen() {
     async function updateTransactionsList() {
         const transactionsList = await getCompletedTransactions(userData.id);
 
-        if (transactionsList.length) {
+        if (transactionsList?.length) {
             dispatch(setTransactions(transactionsList));
         }
     }
