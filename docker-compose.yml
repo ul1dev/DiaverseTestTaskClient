@@ -8,5 +8,3 @@ services:
         restart: always
         ports:
             - '44444:8081'
-        environment:
-            - NODE_ENV=production
